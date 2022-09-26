@@ -44,39 +44,47 @@
     <header>
         <img src="./Star Toys.svg" alt="Logo" class="logo">
         <nav>
-            <a class="inicio" href="#">Inicio</a>
+            <a class="inicio" href="./index.html">Inicio</a>
             <a class="colecciones" href="#">Colecciones</a>
             <a class="productos" href="#">Productos</a>
         </nav>
         <div class="icons">
-            <a href="#">
-                <img src="./Usuario.svg" alt="Usuario" class="usuario">
-            </a>
+            <img src="./Usuario.svg" alt="Usuario" class="usuario">
             <a href="#">
                 <img src="./Carrito.svg" alt="Carrito" class="carrito"> 
             </a>
         </div>
     </header>        
     <form method="post" action="registro.php">
-        <input type="text" id="nombre" placeholder="Nombre y Apellido" maxlength="50" required>
-        <input type="text" id="usuario" placeholder="Nombre de usuario" maxlength="15" required>
-        <input type="password" id="contra" placeholder="Contraseña" maxlength="50" required>
-        <input type="email" id="correo" placeholder="Correo electrónico" maxlength="50" required>
-        <input type="radio" name="sexo-h" id="sexo-hombre">
-        <label for="sexo-h">Hombre</label>
-        <input type="radio" name="sexo-m" id="sexo-mujer">
-        <label for="sexo-m">Mujer</label>
-        <input type="radio" name="sexo-o" id="sexo-otro">
-        <label for="sexo-o">Otro</label>
-        <input type="date" placeholder="Fecha de Nacimiento" id="fecha_n" required>
-        <input type="text" placeholder="Ciudad" maxlength="50" id="ciudad" required>
-        <input type="text" placeholder="Calle" maxlength="50" id="calle" required>
-        <input type="text" placeholder="Numero exterior" id="n_ext" maxlength="50" required>
-        <input type="text" placeholder="Numero interior" id="n_int" maxlength="50" required>
-        <input type="text" placeholder="Código Postal" id="cp" maxlength="8" required>
-        <input type="button" value="Registarme" id="btn-registro">
+        <div class="centrado">
+            <h2 class="espacio">Registro de usuario</h2>
+            <input type="text" id="nombre" placeholder="Nombre y Apellido*" maxlength="50" required class="cuadrotexto espacio"> <br>
+            <input type="text" id="usuario" placeholder="Nombre de usuario*" maxlength="15" required class="cuadrotexto espacio"> <br>
+            <input type="password" id="contra" placeholder="Contraseña*" maxlength="50" required class="cuadrotexto espacio"> <br>
+            <input type="email" id="correo" placeholder="Correo electrónico*" maxlength="50" required class="cuadrotexto espacio"> <br>
+            <div class="espacio">
+                <div class="cuadro izquierda">
+                    <p>Sexo*</p> <br>
+                    <input type="radio" name="sexo" id="sexo-hombre" />  Hombre
+                    <input type="radio" name="sexo" id="sexo-mujer"/>  Mujer
+                    <input type="radio" name="sexo" id="sexo-otro"/>  Otro <br>
+                </div>
+            </div>
+            <div class="espacio">
+                <div class="cuadro izquierda">
+                    <p>Fecha de nacimiento*</p>
+                    <input type="date" placeholder="Fecha de Nacimiento" id="fecha_n" required class="cuadrotexto espacio"> <br>
+                </div>
+            </div>
+            <input type="text" placeholder="Ciudad*" maxlength="50" id="ciudad" required class="cuadrotexto espacio"> <br>
+            <input type="text" placeholder="Calle*" maxlength="50" id="calle" required class="cuadrotexto espacio"> <br>
+            <input type="text" placeholder="Numero exterior*" id="n_ext" maxlength="50" required class="cuadrotexto espacio"> <br>
+            <input type="text" placeholder="Numero interior*" id="n_int" maxlength="50" required class="cuadrotexto espacio"> <br>
+            <input type="text" placeholder="Código Postal*" id="cp" maxlength="8" required class="cuadrotexto espacio"> <br> 
+            <input type="button" value="Registarme" id="btn-registro" class="espacio registro"><br>
+        </div>
     </form>
-    <p id="error-msg"></p>
+    <p id="error-msg" class="espacio centrado"></p>
     <script>
         $(document).ready(function(){
             $("#error-msg").css("color","red");
@@ -153,6 +161,17 @@
             });
     </script>
 </body>
+<footer class="final">
+    <div>
+        <p>Star Toys © 2022. Todos los derechos reservados </p>
+    </div>
+    <div class="icons">
+        <a href="#">
+            <img src="./icons8-facebook-120 1.png" alt="Facebook" class="usuario">
+        </a>
+        <a href="#">
+            <img src="./icons8-instagram-100 1.png" alt="Instagram" class="carrito"> 
+        </a>
+    </div>    
+</footer>
 </html>
-
-    
