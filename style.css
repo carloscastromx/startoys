@@ -14,6 +14,7 @@ header{
 }
 a{
     text-decoration: none;
+    cursor: pointer;
 }
 .logo{
     height: 50px;
@@ -48,6 +49,7 @@ nav a{
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    margin-bottom: 40px;
 }
 .producto-nuevo-box{
     border: 1px solid #CBCBCB;
@@ -76,6 +78,12 @@ nav a{
     margin: auto;
     text-decoration: none;
     font-size: 24px;
+    margin-bottom: 12px;
+}
+.coleccionestitulo .ver-mas{
+    margin: 0;
+    width: 45%;
+    margin-bottom: 0;
 }
 .textoizquierda{
     font-size: 32px;
@@ -85,7 +93,7 @@ nav a{
     width: 50%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
 }
 .texto{
     font-size: 18px;
@@ -95,33 +103,22 @@ nav a{
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+.colecciones-box .coleccionestitulo:nth-child(2n){
+    flex-direction: row-reverse;
 }
 h2{
     color: #FF7DD2;
 }
-.imagenp{
-    margin-top: 50px;
-    margin-right: 100px;
-    width: 400px;
-    height: 200px;
-    background-color: #D9D9D9;
-}
-.imagenp2{
-    margin-top: 50px;
-    margin-left: 100px;
-    width: 400px;
-    height: 200px;
-    background-color: #D9D9D9;
-}
-.textoderecha{
-    font-size: 32px;
-    text-align: right;
-    padding: 0 50px;
-    margin-top: 50px;
+.imagen-producto{
     width: 50%;
     display: flex;
-    flex-direction: column;
-    gap: 20px; 
+    justify-content: center;
+}
+.imagen-producto img{
+    width: 50%;
+    max-width: 100%;
 }
 .final{
     width: 100%;
@@ -154,9 +151,17 @@ h2{
 }
 .registro{
     width: 180px;
-    height: 35px;
+    padding: 8px 16px;
     background-color:#6F2DBD;
     color: white;
     border: 1px solid #6F2DBD;
+    border-radius: 5px;
+    font-size: 20px;
     cursor: pointer;
+}
+.txt-cuenta-existente {
+    margin-top: 15px;
+}
+.txt-cuenta-existente a {
+    color: #475AFF;
 }

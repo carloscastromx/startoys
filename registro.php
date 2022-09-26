@@ -80,7 +80,8 @@
             <input type="text" placeholder="Calle*" maxlength="50" id="calle" required class="cuadrotexto espacio"> <br>
             <input type="text" placeholder="Numero exterior*" id="n_ext" maxlength="50" required class="cuadrotexto espacio"> <br>
             <input type="text" placeholder="Numero interior*" id="n_int" maxlength="50" required class="cuadrotexto espacio"> <br>
-            <input type="text" placeholder="Código Postal*" id="cp" maxlength="8" required class="cuadrotexto espacio"> <br> 
+            <input type="text" placeholder="Código Postal*" id="cp" maxlength="8" required class="cuadrotexto espacio"> <br>
+            <p class="txt-cuenta-existente">¿Ya tienes una cuenta? <a>Iniciar Sesión</a></p>
             <input type="button" value="Registarme" id="btn-registro" class="espacio registro"><br>
         </div>
     </form>
@@ -118,16 +119,14 @@
                 var num_int = $("#n_int").val();
                 var num_ext = $("#n_ext").val();
                 var codigo_postal = $("#cp").val();
-                
 
-                if(sexo != "H" && sexo != "M" && sexo != "O"){
-                    $("#error-msg").html("El campo sexo no puede estar vacío");
+                if(name == "" || pass == "" || email == "" || nac == "" || ciudad == "" || calle == "" || num_ext == "" | codigo_postal == ""){
+                    $("#error-msg").html("Completa los campos obligatorios");
                 } else {
-                    if(name == "" || pass == "" || email == "" || nac == "" || ciudad == "" || calle == "" || num_int == "" || num_ext == "" | codigo_postal == ""){
+                    if(sexo != "H" && sexo != "M" && sexo != "O"){
                         $("#error-msg").html("Completa los campos obligatorios");
                     } else {
                         $("#error-msg").html("");
-                        console.log(num_int);
                         $.ajax(
                             {
                                 url:'registro.php',
@@ -167,10 +166,10 @@
     </div>
     <div class="icons">
         <a href="#">
-            <img src="./icons8-facebook-120 1.png" alt="Facebook" class="usuario">
+            <img src="./icon-facebook.svg" alt="Facebook" class="usuario">
         </a>
         <a href="#">
-            <img src="./icons8-instagram-100 1.png" alt="Instagram" class="carrito"> 
+            <img src="./icon-instagram.svg" alt="Instagram" class="carrito"> 
         </a>
     </div>    
 </footer>
