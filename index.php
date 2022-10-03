@@ -64,7 +64,10 @@
                 </div>
                 <p class="textocuadro"><?php echo $producto['nombre']; ?></p>
                 <p class="coleccion-p-txt"><?php echo $colecciones[$producto['coleccion']]; ?></p>
-                <p class="precio">$<?php echo $producto['precio']; ?></p>
+                <p class="precio">$<?php
+                    $precio = (float)$producto['precio'];
+                    echo number_format($precio,0,".",","); 
+                 ?></p>
                 <a href="#" class="ver-mas">Ver más</a>
             </div>
         <?php } ?>
