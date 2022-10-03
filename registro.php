@@ -1,32 +1,33 @@
-<?php 
+<?php
 
-    $server = "localhost";
-    $user= "u976611399_2GwXe";
-    $pass_bd = "fJSw8NDd";
-    $bd = "u976611399_startoys";
+    if(isset($_POST["registro"])){
+        $server = "localhost";
+        $user= "u976611399_2GwXe";
+        $pass_bd = "fJSw8NDd";
+        $bd = "u976611399_startoys";
 
-    $conexion = new mysqli($server,$user,$pass_bd,$bd);
+        $conexion = new mysqli($server,$user,$pass_bd,$bd);
 
-    if ($conexion->connect_error) {
-        die("Connection failed: " . $conexion->connect_error);
-    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $name = $conexion->real_escape_string($_POST["nombre"]);
-        $username = $conexion->real_escape_string($_POST["user"]);
-        $pass = $conexion->real_escape_string($_POST["contra"]);
-        $email = $conexion->real_escape_string($_POST["correo"]);
-        $sexo = $conexion->real_escape_string($_POST["sex"]);
-        $fecha_nac = $conexion->real_escape_string($_POST["fnac"]);
-        $ciudad = $conexion->real_escape_string($_POST["city"]);
-        $calle = $conexion->real_escape_string($_POST["ncalle"]);
-        $n_int = $conexion->real_escape_string($_POST["nint"]);
-        $n_ext = $conexion->real_escape_string($_POST["next"]);
-        $codigo_p = $conexion->real_escape_string($_POST["cp"]);
+        if ($conexion->connect_error) {
+            die("Connection failed: " . $conexion->connect_error);
+        } else {
+            $name = $conexion->real_escape_string($_POST["nombre"]);
+            $username = $conexion->real_escape_string($_POST["user"]);
+            $pass = $conexion->real_escape_string($_POST["contra"]);
+            $email = $conexion->real_escape_string($_POST["correo"]);
+            $sexo = $conexion->real_escape_string($_POST["sex"]);
+            $fecha_nac = $conexion->real_escape_string($_POST["fnac"]);
+            $ciudad = $conexion->real_escape_string($_POST["city"]);
+            $calle = $conexion->real_escape_string($_POST["ncalle"]);
+            $n_int = $conexion->real_escape_string($_POST["nint"]);
+            $n_ext = $conexion->real_escape_string($_POST["next"]);
+            $codigo_p = $conexion->real_escape_string($_POST["cp"]);
 
-        $sql = "INSERT INTO Usuarios(nombre, nombre_de_usuario, contraseña, correo, sexo, fecha_nac, ciudad, calle, num_ext, num_int, codigo_postal)
-        VALUES('$name', '$username', '$pass', '$email', '$sexo', '$fecha_nac', '$ciudad', '$calle', '$n_ext', '$n_int', '$codigo_p')";
+            $sql = "INSERT INTO Usuarios(nombre, nombre_de_usuario, contraseña, correo, sexo, fecha_nac, ciudad, calle, num_ext, num_int, codigo_postal)
+            VALUES('$name', '$username', '$pass', '$email', '$sexo', '$fecha_nac', '$ciudad', '$calle', '$n_ext', '$n_int', '$codigo_p')";
 
-        $datos = $conexion->query($sql);
-
+            $datos = $conexion->query($sql);
+        }
     }
 
 ?>
@@ -81,7 +82,7 @@
             <input type="text" placeholder="Numero exterior*" id="n_ext" maxlength="50" required class="cuadrotexto espacio"> <br>
             <input type="text" placeholder="Numero interior*" id="n_int" maxlength="50" required class="cuadrotexto espacio"> <br>
             <input type="text" placeholder="Código Postal*" id="cp" maxlength="8" required class="cuadrotexto espacio"> <br>
-            <p class="txt-cuenta-existente">¿Ya tienes una cuenta? <a>Iniciar Sesión</a></p>
+            <p class="txt-cuenta-existente">¿Ya tienes una cuenta? <a href="login.php">Iniciar Sesión</a></p>
             <input type="button" value="Registarme" id="btn-registro" class="espacio registro"><br>
         </div>
     </form>
@@ -132,6 +133,7 @@
                                 url:'registro.php',
                                 method: 'POST',
                                 data: {
+                                    registro: 1,
                                     nombre: name,
                                     user: usuario,
                                     contra: pass,
