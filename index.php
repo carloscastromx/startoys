@@ -1,4 +1,33 @@
-<!DOCTYPE html>
+<?php 
+
+    $email = $_POST["correo"];
+    $pass = $_POST["contra"];
+
+    $server = "localhost";
+    $user= "u976611399_2GwXe";
+    $pass_bd = "fJSw8NDd";
+    $bd = "u976611399_startoys";
+
+    $conexion = new mysqli($server,$user,$pass_bd,$bd);
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    } else {
+        //Consulta para productos más recientes (ID más grande == Producto más reciente)
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM `Productos` ORDER BY id_producto DESC LIMIT 4";
+        $resultados = mysqli_query($conexion,$consulta);
+        //Convertir a arreglos para iteración
+        $productos = mysqli_fetch_all($resultados,MYSQLI_ASSOC);
+
+        mysqli_free_result($resultados);
+
+        mysqli_close($conexion);
+
+        $colecciones = array("", "Muñecas", "Casas", "Accesorios");
+        
+    }
+
+?>
 <html lang="es-mx">
 <head>
     <meta charset="UTF-8">
@@ -28,38 +57,17 @@
     <div class="banner">banner</div>
     <h2 class="nuevop">Nuevos Productos</h2>
     <div class="productos-nuevos">
-        <div class="producto-nuevo-box">
-            <div class="imagen">
-                imagen
+        <?php foreach($productos as $producto){ ?>
+                <div class="producto-nuevo-box">
+                <div class="imagen">
+                    <img src="https://startoys.shop/imgs/<?php echo $producto['imagen']; ?>">
+                </div>
+                <p class="textocuadro"><?php echo $producto['nombre']; ?></p>
+                <p class="coleccion-p-txt"><?php echo $colecciones[$producto['coleccion']]; ?></p>
+                <p class="precio">$<?php echo $producto['precio']; ?></p>
+                <a href="#" class="ver-mas">Ver más</a>
             </div>
-            <p class="textocuadro">Nombre</p>
-            <p class="precio">$</p>
-            <a href="#" class="ver-mas">Ver más</a>
-        </div>
-        <div class="producto-nuevo-box">
-            <div class="imagen">
-                imagen
-            </div>
-            <p class="textocuadro">Nombre</p>
-            <p class="precio">$</p>
-            <a href="#" class="ver-mas">Ver más</a>
-        </div>
-        <div class="producto-nuevo-box">
-            <div class="imagen">
-                imagen
-            </div>
-            <p class="textocuadro">Nombre</p>
-            <p class="precio">$</p>
-            <a href="#" class="ver-mas">Ver más</a>
-        </div>
-        <div class="producto-nuevo-box">
-            <div class="imagen">
-                imagen
-            </div>
-            <p class="textocuadro">Nombre</p>
-            <p class="precio">$</p>
-            <a href="#" class="ver-mas">Ver más</a>
-        </div>
+        <?php } ?>
     </div>
     <div class="colecciones-box">
         <div class="coleccionestitulo">
