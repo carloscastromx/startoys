@@ -1,6 +1,38 @@
 <?php 
     session_start();
-    var_dump($_SESSION['carrito']);
+    if(!isset($_SESSION['loggeado'])){
+        header("Location: https://startoys.shop/login.php");
+    }
+    $ids = implode(",", $_SESSION['carrito']);
+
+    $cantidad = count($_SESSION['carrito']);
+
+    $server = "localhost";
+    $user= "u976611399_2GwXe";
+    $pass_bd = "fJSw8NDd";
+    $bd = "u976611399_startoys";
+
+    $conexion = new mysqli($server,$user,$pass_bd,$bd);
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    } else {
+        $consulta = "SELECT * FROM Productos WHERE id_producto IN ($ids)";
+        $resultados = mysqli_query($conexion,$consulta);
+        //Convertir a arreglos para iteración
+        $productos = mysqli_fetch_all($resultados,MYSQLI_ASSOC);
+
+        mysqli_free_result($resultados);
+
+        $total_carrito = 0;
+        foreach($productos as $p){
+            $total_carrito += (float)$p['precio'];
+        }
+
+        $colecciones = array("", "Muñecas", "Casas", "Accesorios");
+
+        mysqli_close($conexion);
+    }
 ?>
 <html lang="es-mx">
 <head>
@@ -30,7 +62,42 @@
     </header>        
     <section class="main-colecciones">
         <h1>Carrito de Compras</h1>
-
+        <section>
+        <p class="carrito-txt-h">
+        <?php if($ids = ""){
+            $prods = false;
+            echo "No has agregado ningun producto";
+        } else {
+            $prods = true;
+            echo "Mostrando ".$cantidad." productos";}
+        ?>
+        </p>
+        <div class="carrito-box">
+            <?php if($prods == true){
+                foreach($productos as $producto){ ?>
+                    <div class="producto-carrito">
+                        <img src="https://startoys.shop/imgs/<?php echo $producto['imagen']; ?>" alt="">
+                        <div class="datos-producto-carrito">
+                            <h3><?php echo $producto['nombre']; ?></h3>
+                            <p class="coleccion-carrito"><?php echo $colecciones[$producto['coleccion']]; ?></p>
+                            <p class="precio-carrito">$<?php
+                                $precio = (float)$producto['precio'];
+                                echo number_format($precio,0,".",","); 
+                            ?></p>
+                        </div>
+                    </div>
+                <?php }
+            } ?>
+            <div class="total-row">
+            <?php if($prods == true){ ?>
+                <p>Total <span>$<?php echo number_format($total_carrito,0,".",","); ?></span></p>
+            <?php } ?>
+            </div>
+        </div>
+        <div class="btn-carrito-row">
+            <a href="#" class="btn-checkout">Proceder al pago</a>
+        </div>        
+        </section>
     </section>
     <footer class="final">
         <div>

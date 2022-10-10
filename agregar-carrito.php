@@ -1,11 +1,20 @@
 <?php 
     session_start();
 
-    if(empty($_SESSION['carrito'])){
-        $_SESSION['carrito'] = array();
+    if(isset($_SESSION['loggeado'])){
+        if(empty($_SESSION['carrito'])){
+            $_SESSION['carrito'] = array();
+        }
+    
+        if(!in_array($_GET['id'],$_SESSION['carrito'])){
+            $existente = false;
+            array_push($_SESSION['carrito'], $_GET['id']);
+        } else {
+            $existente = true;
+        }
+    } else {
+        header("Location: login.php");
     }
-
-    array_push($_SESSION['carrito'], $_GET['id']);
 ?>
 <html lang="es-mx">
 <head>
@@ -34,7 +43,14 @@
         </div>
     </header>        
     <section class="main">
-        <h2>Producto agregado exitosamente</h2>
+        <h2>
+            <?php if($existente == false){
+                echo "Producto agregado exitosamente";
+            } else {
+                echo "Ya habías agregado el producto a tu carrito";
+            }
+            ?>
+        </h2>
         <a href="https://startoys.shop/carrito/">Ver carrito de compras</a>
     </section>
     <footer class="final">
