@@ -1,12 +1,11 @@
 <?php 
-
     session_start();
 
-    if(!isset($_SESSION["loggeado"])){
-        header("Location: login.php");
-        exit();
+    if(empty($_SESSION['carrito'])){
+        $_SESSION['carrito'] = array();
     }
-    
+
+    array_push($_SESSION['carrito'], $_GET['id']);
 ?>
 <html lang="es-mx">
 <head>
@@ -16,7 +15,6 @@
     <title>Star Toys</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -27,28 +25,34 @@
             <a class="productos" href="https://startoys.shop/productos/">Productos</a>
         </nav>
         <div class="icons">
-            <img src="./Usuario.svg" alt="Usuario" class="usuario">
+            <a href="./login.php">
+                <img src="./Usuario.svg" alt="Usuario" class="usuario">
+            </a>
             <a href="https://startoys.shop/carrito/">
                 <img src="https://startoys.shop/Carrito.svg" alt="Carrito" class="carrito"> 
             </a>
         </div>
     </header>        
-    <div class="centrado">
-            <p>¿Estás seguro que quieres cerrar sesión=</p>
-            <a href="./logout-action.php">Confirmar</a>
+    <section class="main">
+        <h2>Producto agregado exitosamente</h2>
+        <a href="https://startoys.shop/carrito/">Ver carrito de compras</a>
+    </section>
+    <footer class="final">
+        <div>
+            <p>Star Toys © 2022. Todos los derechos reservados </p>
         </div>
+        <div class="icons">
+            <a href="#">
+                <img src="./icon-facebook.svg" alt="Facebook" class="usuario">
+            </a>
+            <a href="#">
+                <img src="./icon-instagram.svg" alt="Instagram" class="carrito"> 
+            </a>
+        </div>
+        
+    </footer>
 </body>
-<footer class="final">
-    <div>
-        <p>Star Toys © 2022. Todos los derechos reservados </p>
-    </div>
-    <div class="icons">
-        <a href="#">
-            <img src="./icon-facebook.svg" alt="Facebook" class="usuario">
-        </a>
-        <a href="#">
-            <img src="./icon-instagram.svg" alt="Instagram" class="carrito"> 
-        </a>
-    </div>    
-</footer>
 </html>
+
+
+    
