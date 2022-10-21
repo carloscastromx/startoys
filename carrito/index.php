@@ -29,6 +29,17 @@
             $total_carrito += (float)$p['precio'];
         }
 
+        //Agregar envío de $99
+        $total_carrito += 99;
+
+        $_SESSION['totalpedido'] = $total_carrito;
+
+        if(count($productos) >= 1){
+            $prods = true;
+        } else {
+            $prods = false;
+        }
+
         $colecciones = array("", "Muñecas", "Casas", "Accesorios");
 
         mysqli_close($conexion);
@@ -64,11 +75,9 @@
         <h1>Carrito de Compras</h1>
         <section>
         <p class="carrito-txt-h">
-        <?php if($ids = ""){
-            $prods = false;
+        <?php if($prods == false){
             echo "No has agregado ningun producto";
         } else {
-            $prods = true;
             echo "Mostrando ".$cantidad." productos";}
         ?>
         </p>
@@ -76,7 +85,10 @@
             <?php if($prods == true){
                 foreach($productos as $producto){ ?>
                     <div class="producto-carrito">
-                        <img src="https://startoys.shop/imgs/<?php echo $producto['imagen']; ?>" alt="">
+                        <div style="width: 15%;">
+                            <img src="https://startoys.shop/imgs/<?php echo $producto['imagen']; ?>" alt="<?php echo $producto['nombre']; ?>">
+                        </div>
+                        
                         <div class="datos-producto-carrito">
                             <h3><?php echo $producto['nombre']; ?></h3>
                             <p class="coleccion-carrito"><?php echo $colecciones[$producto['coleccion']]; ?></p>
@@ -95,7 +107,9 @@
             </div>
         </div>
         <div class="btn-carrito-row">
-            <a href="#" class="btn-checkout">Proceder al pago</a>
+            <?php if($prods == true){ ?>
+                <a href="https://startoys.shop/checkout/" class="btn-checkout">Proceder al pago</a>
+            <?php } ?>
         </div>        
         </section>
     </section>
@@ -115,6 +129,3 @@
     </footer>
 </body>
 </html>
-
-
-    

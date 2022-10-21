@@ -34,7 +34,7 @@
         </div>
     </header>        
     <div class="centrado">
-            <p>¿Estás seguro que quieres cerrar sesión=</p>
+            <p>¿Estás seguro que quieres cerrar sesión?</p>
             <a href="./logout-action.php">Confirmar</a>
         </div>
 </body>

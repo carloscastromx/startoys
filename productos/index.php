@@ -4,9 +4,6 @@ $user= "u976611399_2GwXe";
 $pass_bd = "fJSw8NDd";
 $bd = "u976611399_startoys";
 
-//precio max 5299
-//precio min 79
-
 $conexion = new mysqli($server,$user,$pass_bd,$bd);
 
 if ($conexion->connect_error) {
@@ -19,8 +16,135 @@ if ($conexion->connect_error) {
     $marcas = mysqli_fetch_all($resultados,MYSQLI_ASSOC);
 
     mysqli_free_result($resultados);
-    //Consulta para productos ordenados por más recientes (ID más grande == Producto más reciente)
-    $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos ORDER BY id_producto DESC";
+
+    $f_precio = false;
+    $f_marca = false;
+    $f_coleccion = false;
+
+    if(isset($_GET["precio"])){
+        $f_precio = true;
+        $filtro_precio = $_GET["precio"];
+        switch ($filtro_precio){
+            case "menos-100":
+                $precio_sql = "precio < 100";
+                break;
+            case "100-300":
+                $precio_sql = "precio BETWEEN 100 AND 300";
+                break;
+            case "300-600":
+                $precio_sql = "precio BETWEEN 300 AND 600";
+                break;
+            case "600-1000":
+                $precio_sql = "precio BETWEEN 600 AND 1000";
+                break;
+            case "1000-1500":
+                $precio_sql = "precio BETWEEN 1000 AND 1500";
+                break;
+            case "mas-1500":
+                $precio_sql = "precio >= 1500";
+                break; 
+        } 
+    }
+
+    if(isset($_GET["coleccion"])){
+        $f_coleccion = true;
+        $filtro_coleccion = $_GET["coleccion"];
+
+        switch ($filtro_coleccion){
+            case "casas":
+                $coleccion_sql = "coleccion = 2";
+                break;
+            case "munecas":
+                $coleccion_sql = "coleccion = 1";
+                break;
+            case "accesorios":
+                $coleccion_sql = "coleccion = 3";
+                break;
+        }
+    }
+
+    if(isset($_GET["marca"])){
+        $f_marca = true;
+        $query  = explode('&', $_SERVER['QUERY_STRING']);
+        $params = array();
+        
+        foreach( $query as $param )
+        {
+            if (strpos($param, '=') === false) $param += '=';
+
+            list($name, $value) = explode('=', $param, 2);
+            $params[urldecode($name)][] = urldecode($value);
+        }
+
+        $filtro_marca = $params['marca'];
+        $terminos_marca = implode(",", $filtro_marca);
+
+        $marca_sql = "id_marca in ('$terminos_marca')";
+    }
+
+    //Armar consulta
+
+    //Sin filtros
+    if($f_coleccion == false && $f_marca == false && $f_precio == false){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos ORDER BY id_producto DESC";
+    }
+
+    //Filtro individual coleccion
+    if($f_coleccion == true && $f_marca == false && $f_precio == false){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $coleccion_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+    //Filtro individual marca
+    if($f_marca == true && $f_coleccion == false && $f_precio == false){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $marca_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+    //Filtro individual precio
+    if($f_precio == true && $f_coleccion == false && $f_marca == false){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $precio_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+     //Filtro Coleccion + Marca
+     if($f_coleccion == true && $f_marca == true && $f_precio == false){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $coleccion_sql . " and " . $marca_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+    //Filtro Coleccion + Precio
+    if($f_coleccion == true && $f_marca == false && $f_precio == true){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $coleccion_sql . " and " . $precio_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+    //Filtro Marca + Precio
+    if($f_coleccion == false && $f_marca == true && $f_precio == true){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $marca_sql . " and " . $precio_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+
+    //Filtro Coleccion + Marca + Precio
+    if($f_coleccion == true && $f_marca == true && $f_precio == true){
+        $consulta = "SELECT id_producto, nombre, imagen, precio, coleccion FROM Productos WHERE ";
+        $consulta .= $coleccion_sql . " and " . $marca_sql . " and " . $precio_sql;
+        //agregar el order by para productos mas recientes
+        $consulta .= " ORDER BY id_producto DESC";
+    }
+    
     $resultados = mysqli_query($conexion,$consulta);
     //Convertir a arreglos para iteración
     $productos = mysqli_fetch_all($resultados,MYSQLI_ASSOC);
@@ -66,30 +190,62 @@ if ($conexion->connect_error) {
         <div class="productos-col">
             <div class="filtros">
                 <form method="GET">
-                    <label class="filtro-titulo">Colección</label>
-                    <input type="radio" name="coleccion" value="casas"> Casas
-                    <input type="radio" name="coleccion" value="munecas"> Muñecas
-                    <input type="radio" name="coleccion" value="accesorios"> Accesorios
-                    <label class="filtro-titulo">Marca</label>
-                    <?php foreach($marcas as $marca) { ?>
-                        <label>
-                            <input type="checkbox" name="marca" value="<?php echo $marca['id_marca']; ?>">
-                            <?php echo $marca['nombre']; ?>
-                        </label>
-                    <?php } ?>
+                    <p>Filtros</p>
+                    <hr>
+                    <label class="filtro-titulo">Colección</label> <br>
+                    <div class="filtros-centrados">
+                        <div>
+                            <input type="radio" name="coleccion" value="casas"> Casas 
+                        </div>
+                        <div>
+                            <input type="radio" name="coleccion" value="munecas"> Muñecas 
+                        </div> 
+                        <div>
+                            <input type="radio" name="coleccion" value="accesorios"> Accesorios <br>
+                        </div>
+                    </div>
+                    <label class="filtro-titulo">Marca</label> <br>
+                    <div class="filtros-centrados">
+                        <?php foreach($marcas as $marca) { ?>
+                            <label>
+                                <input type="checkbox" name="marca" value="<?php echo $marca['id_marca']; ?>">
+                                <?php echo $marca['nombre']; ?>
+                            </label>
+                        <?php } ?>
+                    </div>
                     <label class="filtro-titulo">Precio</label>
-                    <input type="radio" name="precio" id="" value="menos-100"> Menos de $100
-                    <input type="radio" name="precio" id="" value="100-300"> $100 - 300
-                    <input type="radio" name="precio" id="" value="300-600"> $300 - $600
-                    <input type="radio" name="precio" id="" value="600-1000"> $600 - $1,000
-                    <input type="radio" name="precio" id="" value="1000-1500"> $1,000 - $1,500
-                    <input type="radio" name="precio" id="" value="mas-1500"> Más de $1,500
-                    <!-- <input type="button" value="Aplicar" id="btn-filtrar"> -->
+                    <div class="filtros-centrados">
+                        <div>
+                            <input type="radio" name="precio" id="" value="menos-100"> Menos de $100
+                        </div>
+                        <div>
+                            <input type="radio" name="precio" id="" value="100-300"> $100 - 300
+                        </div>
+                        <div>
+                            <input type="radio" name="precio" id="" value="300-600"> $300 - $600
+                        </div>
+                        <div>
+                            <input type="radio" name="precio" id="" value="600-1000"> $600 - $1,000
+                        </div>
+                        <div>
+                            <input type="radio" name="precio" id="" value="1000-1500"> $1,000 - $1,500
+                        </div>
+                        <div>
+                            <input type="radio" name="precio" id="" value="mas-1500"> Más de $1,500
+                        </div>
+                        <div>
+                            <input type="submit" value="Aplicar" id="btn-filtrar">
+                        </div> 
+                    </div>
+                    
                 </form>
             </div>
             <div class="productos-cont">
                 <p class="cantidad-resultados">Mostrando <?php echo $cantidad; ?> productos disponibles</p>
-                <div class="productos-nuevos">
+                <div class="productos-nuevos cant-<?php echo $cantidad; ?>">
+                    <?php if($cantidad < 1){ ?>
+                        <p>No hay productos que cumplan tus criterios de búsqueda</p>
+                    <?php } ?>
                     <?php foreach($productos as $producto){ ?>
                             <div class="producto-nuevo-box">
                             <div class="imagen">
@@ -108,47 +264,6 @@ if ($conexion->connect_error) {
             </div>
         </div>
     </section>
-    <script>
-        /*
-        $(document).ready(function(){
-
-            $("#btn-filtrar").on('click', function(){
-                var email = $("#correo").val();
-                var pass = $("#contra").val();
-
-                if(email == "" || pass == ""){
-                    $("#error-msg").css("color","red");
-                    $("#error-msg").html("Ingresa los datos solicitados para iniciar sesión");
-                } else {
-    
-                    $("#error-msg").html("");
-                    $.ajax(
-                        {
-                            url:'index.php',
-                            method: 'GET',
-                            data: {
-                                correo: email,
-                                contra: pass
-                            },
-                            success: function(response){
-                                if(response == "fail"){
-                                    $("#error-msg").css("color","red");
-                                    $("#error-msg").html("Datos incorrectos");
-                                } else {
-                                    $("#error-msg").css("color","green");
-                                }
-
-                            },
-                            dataType: 'text'
-                        }
-                    );
-                    
-                } 
-                
-            });
-
-            });*/
-    </script>
     <footer class="final">
         <div>
             <p>Star Toys © 2022. Todos los derechos reservados </p>

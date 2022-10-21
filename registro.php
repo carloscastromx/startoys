@@ -11,10 +11,24 @@
         if ($conexion->connect_error) {
             die("Connection failed: " . $conexion->connect_error);
         } else {
+            $email = $conexion->real_escape_string($_POST["correo"]);
+            //Checar si correo ya existe en BD
+
+            $sql = "SELECT * From Usuarios WHERE correo = '$email'";
+            $resultados = mysqli_query($conexion,$sql);
+            $cantidad = mysqli_num_rows($resultados);
+
+            mysqli_free_result($resultados);
+
+            if($cantidad >= 1){
+                exit("existente");
+            } else {
+
+            }
+
             $name = $conexion->real_escape_string($_POST["nombre"]);
             $username = $conexion->real_escape_string($_POST["user"]);
             $pass = $conexion->real_escape_string($_POST["contra"]);
-            $email = $conexion->real_escape_string($_POST["correo"]);
             $sexo = $conexion->real_escape_string($_POST["sex"]);
             $fecha_nac = $conexion->real_escape_string($_POST["fnac"]);
             $ciudad = $conexion->real_escape_string($_POST["city"]);
@@ -42,6 +56,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 <body>
+    <?php echo $cantidad; ?>
     <header>
         <img src="./Star Toys.svg" alt="Logo" class="logo">
         <nav>
@@ -57,13 +72,13 @@
         </div>
     </header>        
     <form method="post" action="registro.php">
-        <div class="centrado">
+        <div class="centrado" style="width:80%;margin:auto;">
             <h2 class="espacio">Registro de usuario</h2>
             <input type="text" id="nombre" placeholder="Nombre y Apellido*" maxlength="50" required class="cuadrotexto espacio"> <br>
             <input type="text" id="usuario" placeholder="Nombre de usuario*" maxlength="15" required class="cuadrotexto espacio"> <br>
             <input type="password" id="contra" placeholder="Contraseña*" maxlength="50" required class="cuadrotexto espacio"> <br>
             <input type="email" id="correo" placeholder="Correo electrónico*" maxlength="50" required class="cuadrotexto espacio"> <br>
-            <div class="espacio">
+            <div class="espacio" style="width:500px;margin:auto;">
                 <div class="cuadro izquierda">
                     <p>Sexo*</p> <br>
                     <input type="radio" name="sexo" id="sexo-hombre" />  Hombre
@@ -71,7 +86,7 @@
                     <input type="radio" name="sexo" id="sexo-otro"/>  Otro <br>
                 </div>
             </div>
-            <div class="espacio">
+            <div class="espacio" style="width:500px;margin:auto;">
                 <div class="cuadro izquierda">
                     <p>Fecha de nacimiento*</p>
                     <input type="date" placeholder="Fecha de Nacimiento" id="fecha_n" required class="cuadrotexto espacio"> <br>
@@ -147,8 +162,13 @@
                                     cp: codigo_postal
                                 },
                                 success: function(response){
-                                    $("#error-msg").css("color","green");
-                                    $("#error-msg").html("Usuario registrado exitosamente");
+                                    if(response == "existente"){
+                                        $("#error-msg").css("color","red");
+                                        $("#error-msg").html("El correo ingresado ya está registrado");
+                                    } else {
+                                        $("#error-msg").css("color","green");
+                                        $("#error-msg").html("Usuario registrado exitosamente");
+                                    }
 
                                 },
                                 dataType: 'text'

@@ -51,7 +51,8 @@
             </a>
         </div>
     </header>        
-    <div class="banner">banner</div>
+    <div class="banner" style="background-image: url('https://startoys.shop/banner-star-toys.jpeg');background-size: cover;background-position: center;">
+    </div>
     <h2 class="nuevop">Nuevos Productos</h2>
     <div class="productos-nuevos">
         <?php foreach($productos as $producto){ ?>
