@@ -579,13 +579,7 @@ input#num-tarjeta {
     flex-direction: column;
     align-items: flex-start;
 }
-input#vencimiento-m {
-    padding: 2px;
-    text-align: center;
-    width: 100px;
-    border: 1px solid #CBCBCB;
-}
-input#vencimiento-a {
+input#vencimiento-m, input#vencimiento-a, input#cvv-tarjeta {
     padding: 2px;
     text-align: center;
     width: 100px;
